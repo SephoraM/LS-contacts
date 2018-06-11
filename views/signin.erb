@@ -1,0 +1,15 @@
+<h3 class="user_message">The username and password for your account:</h3>
+
+<form action="/signin" method="post">
+  <div>
+    <label for="username">Username: </label>
+    <input type="text" name="username" value="<%= params[:username] || ""  %>">
+  </div>
+  <div>
+    <label for="password">Password: </label>
+    <input type="text" name="password" value="<%= params[:password] || ""  %>">
+  </div>
+  <div>
+    <button type="submit">Sign in</button>
+  </div>
+</form>

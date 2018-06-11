@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Keeping Contacts</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/whitespace-reset.css">
+    <link rel="stylesheet" href="/stylesheets/application.css">
+  </head>
+  <body>
+    <header>
+      <h1 class="sitename">Keeping Contacts</h1>
+      <h3 class="description">An easy way to maintain your contact list.</h3>
+    </header>
+    <main>
+      <% if session[:message] %>
+        <p class="message"><%= session.delete(:message) %></p>
+      <% end %>
+      <%== yield %>
+    </main>
+    <footer>
+
+    </footer>
+  </body>
+</html>
