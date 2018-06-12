@@ -1,0 +1,13 @@
+<ul>
+  <% @contacts.each do |contact| %>
+   <li class="name"><%= contact[:name] %>
+     <ul>
+       <li class="details">Mobile phone: <%= contact[:mobile] %></li>
+       <li class="details">Home phone: <%= contact[:home] %></li>
+       <li class="details">Email address: <%= contact[:email] %></li>
+     </ul>
+   </li>
+  <% end %>
+</ul>
+
+<p><em>Want to add a new contact? </em> <a href="/new">Add Contact</a></p>

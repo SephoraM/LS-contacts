@@ -1,4 +1,16 @@
 ---
-:family: []
-:friends: []
+:family:
+- :name: Sephora
+  :mobile: ''
+  :home: '6048484797'
+  :email: seph156@gmail.com
+:friends:
+- :name: Sephora Maltais
+  :mobile: ''
+  :home: '6048484797'
+  :email: seph156@gmail.com
+- :name: Tabitha Renee Turton
+  :mobile: ''
+  :home: '6048484797'
+  :email: ''
 :work: []

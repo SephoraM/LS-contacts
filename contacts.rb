@@ -38,7 +38,7 @@ def credentials_path
   end
 end
 
-##### user helpers #####
+##### signup/signin helpers #####
 
 def load_user_credentials
   YAML.load_file(credentials_path) || {}
@@ -68,6 +68,20 @@ end
 def valid_user?(username, password)
   users = load_user_credentials
   users.key?(username) && correct_password?(password, users[username])
+end
+
+##### contacts helpers #####
+
+def load_contacts(username)
+  YAML.load_file(File.join(data_path, "#{username}.yml")) || {}
+end
+
+def redirect_to_list_if_invalid_category(type)
+  redirect '/list' unless %w[all family friends work].include?(type)
+end
+
+def all(contacts)
+  contacts.values.flatten
 end
 
 ##### ROUTES #####
@@ -124,7 +138,47 @@ post '/signout' do
   redirect '/'
 end
 
+##### list routes #####
+
 get '/list' do
   redirect_to_index_if_not_signed_in
   erb :list, layout: :layout
+end
+
+get '/categories/:type' do |type|
+  redirect_to_index_if_not_signed_in
+  redirect_to_list_if_invalid_category(type)
+
+  contacts = load_contacts(session[:username])
+  @contacts = (type == 'all' ? all(contacts) : contacts[type.to_sym])
+  erb :categories, layout: :layout
+end
+
+##### new contact route #####
+
+get '/new' do
+  redirect_to_index_if_not_signed_in
+  erb :new, layout: :layout
+end
+
+post '/new' do
+  username = session[:username]
+  name = params[:contact].strip
+  contacts = load_contacts(username)
+
+  if all(contacts).any? { |contact| contact[:name] == name } || name.empty?
+    session[:message] = "You may not enter that name. Please try again."
+    erb :new, layout: :layout
+  else
+    new_contact = { name: name, mobile: params[:mobile], home: params[:home],
+                    email: params[:email] }
+    contacts[params[:category].to_sym] << new_contact
+
+    File.open(File.join(data_path, "#{username}.yml"), 'w') do |f|
+      YAML.dump(contacts, f)
+    end
+
+    session[:message] = "#{name} is now in your contact list."
+    redirect '/list'
+  end
 end
